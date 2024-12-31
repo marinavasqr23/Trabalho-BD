@@ -4,10 +4,12 @@
 
 CREATE TABLE Turma
 (
-id CHAR(2) NOT NULL PRIMARY KEY
+id CHAR(2) NOT NULL
 capacidade INT NOT NULL
 semestre CHAR(50) NOT NULL
 estado VARCHAR(50) NOT NULL
+CONSTRAINT turma_pkey PRIMARY KEY (id)
+CONSTRAINT turma_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso(id)
 )
 
-
+-- 
