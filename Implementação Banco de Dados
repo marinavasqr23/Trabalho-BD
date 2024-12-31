@@ -1,1 +1,13 @@
+# CÓDIGO SQL
+
+-- Turma
+
+CREATE TABLE Turma
+(
+id CHAR(2) NOT NULL PRIMARY KEY
+capacidade INT NOT NULL
+semestre CHAR(50) NOT NULL
+estado VARCHAR(50) NOT NULL
+)
+
 
