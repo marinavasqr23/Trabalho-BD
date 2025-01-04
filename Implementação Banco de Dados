@@ -1,5 +1,5 @@
 # CÓDIGO SQL
--- Curso 
+------- Curso 
 CREATE TABLE Curso
 (
 id INT NOT NULL,
@@ -8,8 +8,15 @@ duracao_semestres INT NOT NULL,
 regime VARCHAR(50) NOT NULL,
 CONSTRAINT curso_pkey PRIMARY KEY (id)
 )
+INSERT INTO Curso (id, nome, coordenador, duracao_semestres, regime) VALUES
+    (1, 'Engenharia de Software', 'Dr. Joao Silva', 8, 'Semestral'),
+    (2, 'Design Grafico', 'Dr. Maria Oliveira', 4, 'Anual'),
+    (3, 'Ciencias da Computacao', 'Dr. Carlos Souza', 10, 'Semestral'),
+    (4, 'Administracao', 'Dr. Ana Costa', 6, 'Anual'),
+    (5, 'Sistemas de Informacao', 'Dr. Roberto Lima', 6, 'Semestral');
 
--- Turma
+
+--------- Turma
 
 CREATE TABLE Turma
 (
@@ -70,11 +77,14 @@ CREATE TABLE Turma_Sala
 CREATE TABLE Aluno
 (
   id INT NOT NULL,
+  id_curso INT NOT NULL,
   nome VARCHAR(100) NOT NULL,
   matricula INT NOT NULL,
   nasc DATE NOT NULL,
   entrada YEAR NOT NULL,
-  conclusao YEAR NOT NULL
+  conclusao YEAR NOT NULL,
+  CONSTRAINT aluno_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso (id)
+
 )
 
 CREATE TABLE Turma_Aluno
