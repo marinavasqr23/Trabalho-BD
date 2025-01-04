@@ -1,15 +1,97 @@
 # CÓDIGO SQL
+-- Curso 
+CREATE TABLE Curso
+(
+id INT NOT NULL,
+coordenador VARCHAR (100) NOT NULL,
+duracao_semestres INT NOT NULL,
+regime VARCHAR(50) NOT NULL,
+CONSTRAINT curso_pkey PRIMARY KEY (id)
+)
 
 -- Turma
 
 CREATE TABLE Turma
 (
-id CHAR(2) NOT NULL
-capacidade INT NOT NULL
-semestre CHAR(50) NOT NULL
-estado VARCHAR(50) NOT NULL
-CONSTRAINT turma_pkey PRIMARY KEY (id)
+id CHAR(2) NOT NULL,
+id_curso INT NOT NULL,
+capacidade INT NOT NULL,
+semestre CHAR(50) NOT NULL,
+estado VARCHAR(50) NOT NULL,
+CONSTRAINT turma_pkey PRIMARY KEY (id),
 CONSTRAINT turma_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso(id)
 )
 
--- 
+
+-- Disciplina
+
+CREATE TABLE Disciplina 
+(
+id CHAR(3) NOT NULL,
+nome VARCHAR(100) NOT NULL,
+especializacao VARCHAR (100) NOT NULL,
+cargo_horaria TIME NOT NULL,
+ementa VARCHAR(300) NOT NULL,
+CONSTRANT disciplina_pkey PRIMARY KEY (id)
+)
+
+
+CREATE TABLE Turma_Disciplina (
+    id SERIAL PRIMARY KEY,
+    id_turma INT NOT NULL,
+    id_disciplina INT NOT NULL,
+    CONSTRAINT fk_turma_disciplina_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id),
+    CONSTRAINT fk_turma_disciplina_id_disciplina FOREIGN KEY (id_disciplina) REFERENCES Disciplina (id)
+);
+
+
+-- Sala de Aula
+
+CREATE TABLE Sala
+(
+  id INT NOT NULL,
+  estrutura VARCHAR (100) NOT NULL,
+  lousa VARCHAR(50) NOT NULL,
+  capacidade INT NOT NULL,
+  localizacao VARCHAR(100) NOT NULL
+)
+
+CREATE TABLE Turma_Sala
+(
+  id SERIAL PRIMARY KEY,
+  id_turma CHAR(5) NOT NULL,
+  id_sala INT NOT NULL,
+  CONSTRAINT fk_turma_sala_id_turma FOREIGN KEY (id_turma) REFERENCES Turma(id),
+  CONSTRAINT fk_turma_sala_id_sala FOREIGN KEY (id_sala) REFERENCES Sala(id)
+)
+
+-- Aluno 
+
+CREATE TABLE Aluno
+(
+  id INT NOT NULL,
+  nome VARCHAR(100) NOT NULL,
+  matricula INT NOT NULL,
+  nasc DATE NOT NULL,
+  entrada YEAR NOT NULL,
+  conclusao YEAR NOT NULL
+)
+
+CREATE TABLE Turma_Aluno
+(
+  id SERIAL PRIMARY KEY,
+  id_turma INT NOT NULL,
+  id_aluno INT NOT NULL,
+  CONSTRAINT fk_turma_aluno_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id),
+  CONSTRAINT fk_turma_aluno_id_aluno FOREIGN KEY (id_aluno) REFERENCES Aluno (id)
+)
+
+
+
+
+
+
+
+
+
+
