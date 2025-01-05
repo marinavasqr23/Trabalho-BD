@@ -96,6 +96,36 @@ CREATE TABLE Turma_Aluno
   CONSTRAINT fk_turma_aluno_id_aluno FOREIGN KEY (id_aluno) REFERENCES Aluno (id)
 )
 
+-- Professor
+
+CREATE TABLE Professor (
+    id INT PRIMARY KEY NOT NULL,
+    id_curso INT NOT NULL,
+    nome CHAR(100) NOT NULL,
+    especializacao CHAR(100) NOT NULL,
+    FOREIGN KEY (id_curso) REFERENCES Curso(id)
+);
+
+-- Avaliação
+
+CREATE TABLE Avaliacao (
+    id INT PRIMARY KEY NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
+    data_aplicacao DATE NOT NULL,
+    peso_nota INT NOT NULL
+);
+
+-- Nota
+
+CREATE TABLE Nota (
+    id INT PRIMARY KEY NOT NULL,
+    id_avaliacao INT NOT NULL,
+    id_aluno INT NOT NULL,
+    valor FLOAT NOT NULL,
+    FOREIGN KEY (id_avaliacao) REFERENCES Avaliacao(id),
+    FOREIGN KEY (id_aluno) REFERENCES Aluno(id)
+);
+
 
 
 
