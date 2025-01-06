@@ -1,5 +1,5 @@
-# CÓDIGO SQL
-------- Curso 
+# CÓDIGO SQL : TABELAS
+-------------------------------------------------- CURSO------------------------------------------------------
 CREATE TABLE Curso
 (
 id INT NOT NULL,
@@ -8,29 +8,34 @@ duracao_semestres INT NOT NULL,
 regime VARCHAR(50) NOT NULL,
 CONSTRAINT curso_pkey PRIMARY KEY (id)
 )
+
+
 INSERT INTO Curso (id, nome, coordenador, duracao_semestres, regime) VALUES
-    (1, 'Engenharia de Software', 'Dr. Joao Silva', 8, 'Semestral'),
-    (2, 'Design Grafico', 'Dr. Maria Oliveira', 4, 'Anual'),
-    (3, 'Ciencias da Computacao', 'Dr. Carlos Souza', 10, 'Semestral'),
-    (4, 'Administracao', 'Dr. Ana Costa', 6, 'Anual'),
-    (5, 'Sistemas de Informacao', 'Dr. Roberto Lima', 6, 'Semestral');
+(1, 'Engenharia de Software', 'Dr. Joao Silva', 8, 'Semestral'),
+(2, 'Design Grafico', 'Dr. Maria Oliveira', 4, 'Anual'),
+(3, 'Ciencias da Computacao', 'Dr. Carlos Souza', 10, 'Semestral'),
+(4, 'Administracao', 'Dr. Ana Costa', 6, 'Anual'),
+(5, 'Sistemas de Informacao', 'Dr. Roberto Lima', 6, 'Semestral');
 
+-------------------------------------------------- PROFESSOR ------------------------------------------------------
 
---------- Turma
+CREATE TABLE Professor (
+    id INT NOT NULL,
+    id_curso INT NOT NULL,
+    nome CHAR(100) NOT NULL,
+    especializacao CHAR(100) NOT NULL,
+    CONSTRAINT professor_pkey PRIMARY KEY (id)
+    FOREIGN KEY (id_curso) REFERENCES Curso(id)
+);
 
-CREATE TABLE Turma
-(
-id CHAR(2) NOT NULL,
-id_curso INT NOT NULL,
-capacidade INT NOT NULL,
-semestre CHAR(50) NOT NULL,
-estado VARCHAR(50) NOT NULL,
-CONSTRAINT turma_pkey PRIMARY KEY (id),
-CONSTRAINT turma_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso(id)
-)
+INSERT INTO Professor (id, nome, especializacao, id_curso) VALUES
+    (1, 'Dr. Jo\~ao Silva', 'Engenharia de Software', 1),
+    (2, 'Dr. Maria Oliveira', 'Design Gr\'afico', 2),
+    (3, 'Dr. Carlos Souza', 'Ci\^encias da Computa\c{c}\~ao', 3),
+    (4, 'Dr. Ana Costa', 'Administra\c{c}\~ao', 4),
+    (5, 'Dr. Roberto Lima', 'Sistemas de Informa\c{c}\~ao', 5);
 
-
--- Disciplina
+-------------------------------------------------- DISCIPLINA ------------------------------------------------------
 
 CREATE TABLE Disciplina 
 (
@@ -42,37 +47,36 @@ ementa VARCHAR(300) NOT NULL,
 CONSTRANT disciplina_pkey PRIMARY KEY (id)
 )
 
+INSERT INTO Disciplina (id, nome, especializacao, cargo_horaria, ementa) VALUES
+    ('CS1', 'Estruturas de Dados', 'Ciências da Computação', '32:00:00', 'Introdução às estruturas de dados como listas, pilhas, filas e árvores.'),
+    ('DS2', 'Teoria da Cor', 'Design', '40:00:00', 'Estudo das cores, harmonia cromática e aplicação em projetos visuais.'),
+    ('AD3', 'Gestão de Projetos', 'Administração', '48:00:00', 'Planejamento, execução e controle de projetos organizacionais.'),
+    ('ES4', 'Engenharia de Software I', 'Engenharia de Software', '60:00:00', 'Princípios e práticas de engenharia de software, incluindo desenvolvimento ágil.'),
+    ('SI5', 'Banco de Dados', 'Sistemas de Informação', '50:00:00', 'Conceitos básicos de bancos de dados, modelagem e linguagem SQL.');
+    
 
-CREATE TABLE Turma_Disciplina (
-    id SERIAL PRIMARY KEY,
-    id_turma INT NOT NULL,
-    id_disciplina INT NOT NULL,
-    CONSTRAINT fk_turma_disciplina_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id),
-    CONSTRAINT fk_turma_disciplina_id_disciplina FOREIGN KEY (id_disciplina) REFERENCES Disciplina (id)
-);
+-------------------------------------------------- TURMA ------------------------------------------------------
 
-
--- Sala de Aula
-
-CREATE TABLE Sala
+CREATE TABLE Turma
 (
-  id INT NOT NULL,
-  estrutura VARCHAR (100) NOT NULL,
-  lousa VARCHAR(50) NOT NULL,
-  capacidade INT NOT NULL,
-  localizacao VARCHAR(100) NOT NULL
+id CHAR(3) NOT NULL,
+id_curso INT NOT NULL,
+capacidade INT NOT NULL,
+semestre CHAR(6) NOT NULL,
+estado VARCHAR(50) NOT NULL,
+CONSTRAINT turma_pkey PRIMARY KEY (id),
+CONSTRAINT turma_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso(id)
 )
 
-CREATE TABLE Turma_Sala
-(
-  id SERIAL PRIMARY KEY,
-  id_turma CHAR(5) NOT NULL,
-  id_sala INT NOT NULL,
-  CONSTRAINT fk_turma_sala_id_turma FOREIGN KEY (id_turma) REFERENCES Turma(id),
-  CONSTRAINT fk_turma_sala_id_sala FOREIGN KEY (id_sala) REFERENCES Sala(id)
-)
+INSERT INTO Turma (id, id_curso, capacidade, semestre, estado)
+VALUES
+    ('ES1', 1, 40, '2023.1', 'Aberta'), 
+    ('DG2', 2, 30, '2023.2', 'Fechada'), 
+    ('CC3', 3, 50, '2024.1', 'Em andamento'), 
+    ('AD4', 4, 35, '2024.2', 'Concluída'),
+    ('SI5', 5, 25, '2023.1', 'Aberta'); 
 
--- Aluno 
+-------------------------------------------------- ALUNO ------------------------------------------------------
 
 CREATE TABLE Aluno
 (
@@ -83,9 +87,145 @@ CREATE TABLE Aluno
   nasc DATE NOT NULL,
   entrada YEAR NOT NULL,
   conclusao YEAR NOT NULL,
+  CONSTRAINT aluno_pkey PRIMARY KEY (id)
   CONSTRAINT aluno_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso (id)
 
 )
+
+INSERT INTO Aluno (id, id_curso, nome, matricula, nasc, entrada, conclusao)
+VALUES
+    (1, 1, 'Ana Beatriz', 20231001, '2002-05-14', 2023, 2027), -- Engenharia de Software
+    (2, 2, 'Carlos Eduardo', 20221002, '2003-08-20', 2022, 2024), -- Design Gráfico
+    (3, 3, 'Mariana Santos', 20231003, '2001-11-30', 2023, 2028), -- Ciências da Computação
+    (4, 4, 'João Pedro', 20212004, '2000-02-18', 2021, 2024), -- Administração
+    (5, 5, 'Fernanda Oliveira', 20232005, '2004-07-12', 2023, 2026); -- Sistemas de Informação
+
+-------------------------------------------------- AVALIAÇÃO ------------------------------------------------------
+
+CREATE TABLE Avaliacao (
+    id INT NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
+    data_aplicacao DATE NOT NULL,
+    peso_nota INT NOT NULL CHECK (peso_nota > 0 AND peso_nota <= 100),
+    CONSTRAINT avaliacao_pkey PRIMARY KEY (id)
+);
+
+INSERT INTO Avaliacao (id, tipo, data_aplicacao, peso_nota)
+VALUES
+    (1, 'Prova', '2025-03-10', 30),    
+    (2, 'Trabalho', '2025-03-20', 20), 
+    (3, 'Prova', '2025-04-15', 25),   
+    (4, 'Trabalho', '2025-05-05', 15), 
+    (5, 'Prova', '2025-06-10', 10);    
+
+-------------------------------------------------- NOTA ------------------------------------------------------
+
+CREATE TABLE Nota (
+    id INT NOT NULL,
+    id_avaliacao INT NOT NULL,
+    id_aluno INT NOT NULL,
+    valor FLOAT NOT NULL,
+    CONSTRAINT nota_pkey PRIMARY KEY (id),
+    FOREIGN KEY (id_avaliacao) REFERENCES Avaliacao(id),
+    FOREIGN KEY (id_aluno) REFERENCES Aluno(id)
+);
+
+INSERT INTO Nota (id, id_avaliacao, id_aluno, valor)
+VALUES
+    (1, 1, 1, 8.5),  
+    (2, 2, 1, 7.0),  
+    (3, 1, 2, 9.0),  
+    (4, 2, 2, 8.5),  
+    (5, 3, 3, 7.5);  
+
+-------------------------------------------------- SALA DE AULA ------------------------------------------------------
+CREATE TABLE Sala (
+  id INT NOT NULL,    
+  estrutura VARCHAR(100) NOT NULL CHECK (estrutura IN ('Normal', 'Auditório')),  
+  lousa VARCHAR(50) NOT NULL CHECK (lousa IN ('Giz', 'Branca', 'Vidro')),
+  capacidade INT NOT NULL CHECK (capacidade > 0),
+  localizacao VARCHAR(100) NOT NULL,
+  CONSTRAINT sala_pkey PRIMARY KEY (id)
+);
+
+
+INSERT INTO Sala (id, estrutura, lousa, capacidade, localizacao)
+VALUES
+    (101, 'Normal', 'Branca', 50, 'Bloco A - Sala 101'), 
+    (102, 'Normal', 'Giz', 40, 'Bloco B - Sala 102'),    
+    (201, 'Auditório', 'Vidro', 60, 'Bloco C - Auditório 201'), 
+    (202, 'Auditório', 'Branca', 80, 'Bloco D - Auditório 202'), 
+    (301, 'Normal', 'Branca', 50, 'Bloco E - Sala 301'); 
+
+-------------------------------------------------- MATERIAL DIDÁTICO ------------------------------------------------------
+
+CREATRE TABLE Material (
+id INT NOT NULL,
+titulo VARCHAR(50) NOT NULL,
+descricao VARCHAR (200) NOT NULL,
+formato VARCHAR (50) NOT NULL CHECK (formato IN ('PDF', 'Vídeo', 'Áudio', 'Material', 'Externo', 'Outros')),
+CONSTRAINT material_pkey PRIMARY KEY (id)
+);
+
+INSERT INTO Material (id, titulo, descricao, formato)
+VALUES
+    (1, 'Apostila de Algoritmos', 'Introdução a algoritmos e estruturas de dados', 'PDF'),
+    (2, 'Video Aula de Redes', 'Explicação sobre modelos OSI e TCP/IP', 'Vídeo'), 
+    (3, 'Podcast sobre UX', 'Discussão sobre usabilidade e experiência do usuário', 'Áudio'),
+    (4, 'Artigo Externo', 'Artigo sobre inteligência artificial de um site parceiro', 'Externo'), 
+    (5, 'Modelo de Projeto', 'Modelo de apresentação para projetos finais', 'Material'); 
+
+
+-------------------------------------------------- PROJETO DE PESQUISA ------------------------------------------------------
+CREATE TABLE Projeto (
+id INT NOT NULL,
+titulo VARCHAR (100) NOT NULL,
+descricao VARCHAR (200) NOT NULL,
+prof_coord VARCHAR (100) NOT NULL,
+area VARCHAR (100) NOT NULL,
+orcam_planejado DECIMAL(10,3) NOT NULL,
+orcam_disponivel DECIMAL(10,3) NOT NULL NOT NULL CHECK (orcam_disponivel >= 0),
+orcam_realizado DECIMAL(10,3) NOT NULL NOT NULL CHECK (orcam_disponivel >= 0),
+estado VARCHAR(50) NOT NULL CHECK (estado IN ('Planejado', 'Em andamento', 'Finalizado')),
+CONSTRAINT projeto_pkey PRIMARY KEY (id)
+);
+
+INSERT INTO Projeto (id, titulo, descricao, prof_coord, area, orcam_planejado, orcam_disponivel, orcam_realizado, estado)
+VALUES
+    (1, 'Sistema de Gerenciamento Escolar', 'Desenvolvimento de um sistema para escolas públicas', 'Dr. João Silva', 'Engenharia de Software', 50000.000, 40000.000, 10000.000, 'Em andamento'),
+    (2, 'Redes Neurais para Diagnósticos Médicos', 'Estudo de redes neurais para análise de exames médicos', 'Dr. Maria Oliveira', 'Inteligência Artificial', 75000.000, 75000.000, 0.000, 'Planejado'),
+    (3, 'Análise de Dados para Gestão de Negócios', 'Desenvolvimento de dashboards para análise de negócios', 'Dr. Carlos Souza', 'Ciência de Dados', 30000.000, 20000.000, 10000.000, 'Em andamento'),
+    (4, 'Design Sustentável', 'Estudo sobre práticas de design com materiais sustentáveis', 'Dr. Ana Costa', 'Design Gráfico', 20000.000, 5000.000, 15000.000, 'Finalizado'),
+    (5, 'Automação Residencial', 'Desenvolvimento de protótipo para casas inteligentes', 'Dr. Roberto Lima', 'Sistemas de Informação', 40000.000, 35000.000, 5000.000, 'Em andamento');
+
+
+# CÓDIGO SQL : RELACIONAMENTOS
+
+-------------------------------------------------- TURMA_DISCIPLINA ------------------------------------------------------
+
+CREATE TABLE Turma_Disciplina (
+    id SERIAL PRIMARY KEY,
+    id_turma INT NOT NULL,
+    id_disciplina INT NOT NULL,
+    CONSTRAINT fk_turma_disciplina_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id),
+    CONSTRAINT fk_turma_disciplina_id_disciplina FOREIGN KEY (id_disciplina) REFERENCES Disciplina (id)
+);
+
+
+
+-------------------------------------------------- SALA_TURMA ------------------------------------------------------
+
+CREATE TABLE Turma_Sala
+(
+  id SERIAL PRIMARY KEY,
+  id_turma CHAR(5) NOT NULL,
+  id_sala INT NOT NULL,
+  CONSTRAINT fk_turma_sala_id_turma FOREIGN KEY (id_turma) REFERENCES Turma(id),
+  CONSTRAINT fk_turma_sala_id_sala FOREIGN KEY (id_sala) REFERENCES Sala(id)
+)
+
+-------------------------------------------------- ALUNO_TURMA ------------------------------------------------------
+
 
 CREATE TABLE Turma_Aluno
 (
@@ -96,58 +236,9 @@ CREATE TABLE Turma_Aluno
   CONSTRAINT fk_turma_aluno_id_aluno FOREIGN KEY (id_aluno) REFERENCES Aluno (id)
 )
 
--- Professor
 
-CREATE TABLE Professor (
-    id INT PRIMARY KEY NOT NULL,
-    id_curso INT NOT NULL,
-    nome CHAR(100) NOT NULL,
-    especializacao CHAR(100) NOT NULL,
-    FOREIGN KEY (id_curso) REFERENCES Curso(id)
-);
 
--- Avaliação
 
-CREATE TABLE Avaliacao (
-    id INT PRIMARY KEY NOT NULL,
-    tipo VARCHAR(100) NOT NULL,
-    data_aplicacao DATE NOT NULL,
-    peso_nota INT NOT NULL
-);
-
--- Nota
-
-CREATE TABLE Nota (
-    id INT PRIMARY KEY NOT NULL,
-    id_avaliacao INT NOT NULL,
-    id_aluno INT NOT NULL,
-    valor FLOAT NOT NULL,
-    FOREIGN KEY (id_avaliacao) REFERENCES Avaliacao(id),
-    FOREIGN KEY (id_aluno) REFERENCES Aluno(id)
-);
-
--- Projetos de Pesquisa
-
-CREATE TABLE ProjetoDePesquisa (
-    id INT PRIMARY KEY NOT NULL,
-    titulo VARCHAR(100) NOT NULL,
-    descricao VARCHAR(200) NOT NULL,
-    prof_coord VARCHAR(100) NOT NULL,
-    area VARCHAR(100) NOT NULL,
-    orcam_planejado DECIMAL(10,3) NOT NULL,
-    orcam_disponivel DECIMAL(10,3) NOT NULL,
-    orcam_realizado DECIMAL(10,3) NOT NULL,
-    estado VARCHAR(50) NOT NULL
-);
-
--- Materiais Didáticos
-
-CREATE TABLE MaterialDidatico (
-    id INT PRIMARY KEY NOT NULL,
-    titulo VARCHAR(100) NOT NULL,
-    descricao VARCHAR(200) NOT NULL,
-    formato VARCHAR(50) NOT NULL
-);
 
 
 
