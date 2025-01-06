@@ -3,6 +3,7 @@
 CREATE TABLE Curso
 (
 id INT NOT NULL,
+nome VARCHAR(50) NOT NULL,
 coordenador VARCHAR (100) NOT NULL,
 duracao_semestres INT NOT NULL,
 regime VARCHAR(50) NOT NULL,
