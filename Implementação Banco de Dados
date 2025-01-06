@@ -126,6 +126,29 @@ CREATE TABLE Nota (
     FOREIGN KEY (id_aluno) REFERENCES Aluno(id)
 );
 
+-- Projetos de Pesquisa
+
+CREATE TABLE ProjetoDePesquisa (
+    id INT PRIMARY KEY NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    descricao VARCHAR(200) NOT NULL,
+    prof_coord VARCHAR(100) NOT NULL,
+    area VARCHAR(100) NOT NULL,
+    orcam_planejado DECIMAL(10,3) NOT NULL,
+    orcam_disponivel DECIMAL(10,3) NOT NULL,
+    orcam_realizado DECIMAL(10,3) NOT NULL,
+    estado VARCHAR(50) NOT NULL
+);
+
+-- Materiais Didáticos
+
+CREATE TABLE MaterialDidatico (
+    id INT PRIMARY KEY NOT NULL,
+    titulo VARCHAR(100) NOT NULL,
+    descricao VARCHAR(200) NOT NULL,
+    formato VARCHAR(50) NOT NULL
+);
+
 
 
 
