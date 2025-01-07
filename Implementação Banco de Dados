@@ -237,7 +237,71 @@ CREATE TABLE Turma_Aluno
   CONSTRAINT fk_turma_aluno_id_aluno FOREIGN KEY (id_aluno) REFERENCES Aluno (id)
 )
 
+------------------------------------------------- PROFESSOR_TURMA ----------------------------------------------------
 
+
+CREATE TABLE Professor_Turma (
+    id SERIAL PRIMARY KEY,
+    id_professor INT NOT NULL,
+    id_turma CHAR(5) NOT NULL,
+    CONSTRAINT fk_professor_turma_id_professor FOREIGN KEY (id_professor) REFERENCES Professor (id),
+    CONSTRAINT fk_professor_turma_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id)
+);
+
+-------------------------------------------------- CURSO_PROFESSOR ---------------------------------------------------
+
+
+CREATE TABLE Curso_Professor (
+    id SERIAL PRIMARY KEY,
+    id_curso INT NOT NULL,
+    id_professor INT NOT NULL,
+    CONSTRAINT fk_curso_professor_id_curso FOREIGN KEY (id_curso) REFERENCES Curso (id),
+    CONSTRAINT fk_curso_professor_id_professor FOREIGN KEY (id_professor) REFERENCES Professor (id)
+);
+
+----------------------------------------------- MATERIAL DIDATICO_PROFESSOR --------------------------------------------
+
+
+CREATE TABLE MaterialDidatico_Professor (
+    id SERIAL PRIMARY KEY,
+    id_material INT NOT NULL,
+    id_professor INT NOT NULL,
+    CONSTRAINT fk_material_professor_id_material FOREIGN KEY (id_material) REFERENCES Material (id),
+    CONSTRAINT fk_material_professor_id_professor FOREIGN KEY (id_professor) REFERENCES Professor (id)
+);
+
+----------------------------------------------- DISCIPLINA_MATERIAL DIDATICO --------------------------------------------
+
+
+CREATE TABLE Disciplina_MaterialDidatico (
+    id SERIAL PRIMARY KEY,
+    id_disciplina CHAR(3) NOT NULL,
+    id_material INT NOT NULL,
+    CONSTRAINT fk_disciplina_material_id_disciplina FOREIGN KEY (id_disciplina) REFERENCES Disciplina (id),
+    CONSTRAINT fk_disciplina_material_id_material FOREIGN KEY (id_material) REFERENCES Material (id)
+);
+
+----------------------------------------------- PROJETO DE PESQUISA_PROFESSOR --------------------------------------------
+
+
+CREATE TABLE ProjetoPesquisa_Professor (
+    id SERIAL PRIMARY KEY,
+    id_projeto INT NOT NULL,
+    id_professor INT NOT NULL,
+    CONSTRAINT fk_projeto_professor_id_projeto FOREIGN KEY (id_projeto) REFERENCES Projeto (id),
+    CONSTRAINT fk_projeto_professor_id_professor FOREIGN KEY (id_professor) REFERENCES Professor (id)
+);
+
+----------------------------------------------- PROJETO DE PESQUISA_ALUNO ------------------------------------------------
+
+
+CREATE TABLE ProjetoPesquisa_Aluno (
+    id SERIAL PRIMARY KEY,
+    id_projeto INT NOT NULL,
+    id_aluno INT NOT NULL,
+    CONSTRAINT fk_projeto_aluno_id_projeto FOREIGN KEY (id_projeto) REFERENCES Projeto (id),
+    CONSTRAINT fk_projeto_aluno_id_aluno FOREIGN KEY (id_aluno) REFERENCES Aluno (id)
+);
 
 
 
