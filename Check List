@@ -11,6 +11,8 @@ Avaliação OK
 Nota OK
 Material OK
 
+
+
 # INSERTS:
 
 Curso OK
@@ -21,6 +23,14 @@ Disciplina OK
 Sala OK 
 Projeto OK
 Avaliação OK
+Turma_Disciplina OK
+Turma_Sala OK
+Turma_Aluno OK
+Turma_Professor OK
+Turma_Avaliação 
+Turma_Material 
+
+
 
 # DICIONÁRIO
 
@@ -37,3 +47,15 @@ Material
 
 
 # RELACIONAMENTOS 
+Turma_Disciplina OK
+Turma_Sala OK
+Turma_Aluno OK
+Turma_Professor OK
+Turma_Avaliação 
+Turma_Material 
+Professor_Material OK
+Material_Disciplina OK
+Professor_Projeto OK
+Projeto_Aluno OK
+Nota_Aluno
+Nota_Avaliação
