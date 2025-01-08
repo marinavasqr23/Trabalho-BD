@@ -1,3 +1,29 @@
+# DIAGRAMA:
+
+Curso OK
+Turma OK
+Professor OK
+Aluno OK
+Disciplina OK
+Sala  OK 
+Projeto OK
+Avaliação OK
+Nota OK
+Material OK
+
+Turma_Disciplina OK
+Turma_Sala OK
+Turma_Aluno 
+Turma_Professor 
+Turma_Avaliação 
+Turma_Material 
+Professor_Material 
+Material_Disciplina 
+Professor_Projeto 
+Projeto_Aluno 
+Nota_Aluno
+Nota_Avaliação
+
 # TABELAS:
 
 Curso OK
@@ -29,7 +55,12 @@ Turma_Aluno OK
 Turma_Professor OK
 Turma_Avaliação 
 Turma_Material 
-
+Professor_Material 
+Material_Disciplina 
+Professor_Projeto 
+Projeto_Aluno 
+Nota_Aluno
+Nota_Avaliação
 
 
 # DICIONÁRIO
@@ -44,9 +75,20 @@ Projeto
 Avaliação 
 Nota 
 Material 
+Turma_Disciplina 
+Turma_Sala 
+Turma_Aluno 
+Turma_Professor 
+Turma_Avaliação 
+Turma_Material 
+Professor_Material 
+Material_Disciplina 
+Professor_Projeto 
+Projeto_Aluno 
+Nota_Aluno
+Nota_Avaliação
 
-
-# RELACIONAMENTOS 
+# TABELAS RELACIONAMENTOS 
 Turma_Disciplina OK
 Turma_Sala OK
 Turma_Aluno OK
