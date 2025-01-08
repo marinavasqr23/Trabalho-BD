@@ -13,14 +13,14 @@ Material OK
 
 Turma_Disciplina OK
 Turma_Sala OK
-Turma_Aluno 
-Turma_Professor 
+Turma_Aluno OK
+Turma_Professor OK
 Turma_Avaliação 
 Turma_Material 
-Professor_Material 
-Material_Disciplina 
-Professor_Projeto 
-Projeto_Aluno 
+Professor_Material OK
+Material_Disciplina OK
+Professor_Projeto OK 
+Projeto_Aluno  OK
 Nota_Aluno
 Nota_Avaliação
 
