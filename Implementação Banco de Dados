@@ -1,110 +1,143 @@
-# CÓDIGO SQL : TABELAS
--------------------------------------------------- CURSO------------------------------------------------------
+CREATE SCHEMA ProjetoBancodeDados 
+SET search_path TO projetobancodedados;
+
+CREATE SCHEMA projetobd1
+SET search_path TO projetobd1;
+
+-------------------------------------------------- CURSO --------------------------------------------------
 CREATE TABLE Curso
 (
-id INT NOT NULL,
-nome VARCHAR(50) NOT NULL,
-coordenador VARCHAR (100) NOT NULL,
-duracao_semestres INT NOT NULL,
-regime VARCHAR(50) NOT NULL,
-CONSTRAINT curso_pkey PRIMARY KEY (id)
-)
-
+    id VARCHAR(100) NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    coordenador VARCHAR(100) NOT NULL,
+    duracao_semestres INT NOT NULL,
+    regime VARCHAR(50) NOT NULL,
+    CONSTRAINT curso_pkey PRIMARY KEY (id)
+);
 
 INSERT INTO Curso (id, nome, coordenador, duracao_semestres, regime) VALUES
-(1, 'Engenharia de Software', 'Dr. Joao Silva', 8, 'Semestral'),
-(2, 'Design Grafico', 'Dr. Maria Oliveira', 4, 'Anual'),
-(3, 'Ciencias da Computacao', 'Dr. Carlos Souza', 10, 'Semestral'),
-(4, 'Administracao', 'Dr. Ana Costa', 6, 'Anual'),
-(5, 'Sistemas de Informacao', 'Dr. Roberto Lima', 6, 'Semestral');
+    ('25', 'Engenharia de Software', 'Dr. Joao Silva', 8, 'Semestral'),
+    ('30', 'Design Grafico', 'Dr. Maria Oliveira', 4, 'Anual'),
+    ('24', 'Ciencias da Computacao', 'Dr. Carlos Souza', 10, 'Semestral'),
+    ('7', 'Administracao', 'Dr. Ana Costa', 6, 'Anual'),
+    ('10', 'Sistemas de Informacao', 'Dr. Roberto Lima', 6, 'Semestral');
 
--------------------------------------------------- PROFESSOR ------------------------------------------------------
+SELECT * FROM Curso -- Verificando os dados
 
+---------------------------------------------------- PROFESSOR --------------------------------------------------
 CREATE TABLE Professor (
-    id INT NOT NULL,
-    id_curso INT NOT NULL,
+    id VARCHAR (100) NOT NULL,
+    id_curso VARCHAR(100) NOT NULL,
     nome CHAR(100) NOT NULL,
     especializacao CHAR(100) NOT NULL,
-    CONSTRAINT professor_pkey PRIMARY KEY (id)
+    CONSTRAINT professor_pkey PRIMARY KEY (id),
     FOREIGN KEY (id_curso) REFERENCES Curso(id)
 );
 
-INSERT INTO Professor (id, nome, especializacao, id_curso) VALUES
-    (1, 'Dr. Jo\~ao Silva', 'Engenharia de Software', 1),
-    (2, 'Dr. Maria Oliveira', 'Design Gr\'afico', 2),
-    (3, 'Dr. Carlos Souza', 'Ci\^encias da Computa\c{c}\~ao', 3),
-    (4, 'Dr. Ana Costa', 'Administra\c{c}\~ao', 4),
-    (5, 'Dr. Roberto Lima', 'Sistemas de Informa\c{c}\~ao', 5);
+INSERT INTO Professor (id, id_curso, nome, especializacao) VALUES
+    ('P01', '25', 'Dr. João Silva', 'Engenharia de Software'),
+    ('P02', '30', 'Dr. Maria Oliveira', 'Design Gráfico'),
+    ('P03', '24', 'Dr. Carlos Souza', 'Ciências da Computação'),
+    ('P04', '7', 'Dr. Ana Costa', 'Administração'),
+    ('P05', '10', 'Dr. Roberto Lima', 'Sistemas de Informação');
 
--------------------------------------------------- DISCIPLINA ------------------------------------------------------
+SELECT * FROM Professor -- Verificando os dados
 
+---------------------------------------------------- DISCIPLINA --------------------------------------------------
 CREATE TABLE Disciplina 
 (
-id CHAR(3) NOT NULL,
-nome VARCHAR(100) NOT NULL,
-especializacao VARCHAR (100) NOT NULL,
-cargo_horaria TIME NOT NULL,
-ementa VARCHAR(300) NOT NULL,
-CONSTRANT disciplina_pkey PRIMARY KEY (id)
-)
+    id VARCHAR(10) NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    especializacao VARCHAR(100) NOT NULL,
+    carga_horaria INT NOT NULL CHECK (carga_horaria > 0), 
+    ementa VARCHAR(300) NOT NULL,
+    CONSTRAINT disciplina_pkey PRIMARY KEY (id)
+);
 
-INSERT INTO Disciplina (id, nome, especializacao, cargo_horaria, ementa) VALUES
-    ('CS1', 'Estruturas de Dados', 'Ciências da Computação', '32:00:00', 'Introdução às estruturas de dados como listas, pilhas, filas e árvores.'),
-    ('DS2', 'Teoria da Cor', 'Design', '40:00:00', 'Estudo das cores, harmonia cromática e aplicação em projetos visuais.'),
-    ('AD3', 'Gestão de Projetos', 'Administração', '48:00:00', 'Planejamento, execução e controle de projetos organizacionais.'),
-    ('ES4', 'Engenharia de Software I', 'Engenharia de Software', '60:00:00', 'Princípios e práticas de engenharia de software, incluindo desenvolvimento ágil.'),
-    ('SI5', 'Banco de Dados', 'Sistemas de Informação', '50:00:00', 'Conceitos básicos de bancos de dados, modelagem e linguagem SQL.');
-    
+INSERT INTO Disciplina (id, nome, especializacao, carga_horaria, ementa) VALUES
+    ('PR01', 'Estruturas de Dados', 'Programação', 32, 'Introdução às estruturas de dados: listas, pilhas, filas e árvores.'),
+    ('FD02', 'Figma', 'Ferramentas de Design', 40, 'Estudo das cores, harmonia cromática e aplicação em projetos visuais.'),
+    ('RH03', 'Gestão de Pessoas', 'Recursos Humanos', 48, 'Princípios da gestão de pessoas, motivação e desenvolvimento de equipes.'),
+    ('DW04', 'Front End', 'Desenvolvimento WEB', 60, 'Princípios e práticas do desenvolvimento front end'),
+    ('PO05', 'Comportamento Organizacional', 'Psicologia Organizacional', 50, 'Princípios e estudo dos padrões de comportamento humano no ambiente corporativo');
 
--------------------------------------------------- TURMA ------------------------------------------------------
+SELECT * FROM Disciplina -- Verificando os dados
 
+---------------------------------------------------- TURMA --------------------------------------------------
 CREATE TABLE Turma
 (
-id CHAR(3) NOT NULL,
-id_curso INT NOT NULL,
-capacidade INT NOT NULL,
-semestre CHAR(6) NOT NULL,
-estado VARCHAR(50) NOT NULL,
-CONSTRAINT turma_pkey PRIMARY KEY (id),
-CONSTRAINT turma_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso(id)
-)
+    id VARCHAR(10) NOT NULL,
+    id_curso VARCHAR(100) NOT NULL,
+    capacidade INT NOT NULL,
+    semestre CHAR(6) NOT NULL,
+    estado VARCHAR(50) NOT NULL,
+    CONSTRAINT turma_pkey PRIMARY KEY (id),
+    CONSTRAINT turma_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso(id)
+);
 
 INSERT INTO Turma (id, id_curso, capacidade, semestre, estado)
 VALUES
-    ('ES1', 1, 40, '2023.1', 'Aberta'), 
-    ('DG2', 2, 30, '2023.2', 'Fechada'), 
-    ('CC3', 3, 50, '2024.1', 'Em andamento'), 
-    ('AD4', 4, 35, '2024.2', 'Concluída'),
-    ('SI5', 5, 25, '2023.1', 'Aberta'); 
+    ('ES1', '25', 40, '2023.1', 'Aberta'), 
+    ('DG2', '30', 30, '2023.2', 'Fechada'), 
+    ('CC3', '24', 50, '2024.1', 'Em andamento'), 
+    ('AD4', '7', 35, '2024.2', 'Concluída'),
+    ('SI5', '10', 25, '2023.1', 'Aberta');
 
--------------------------------------------------- ALUNO ------------------------------------------------------
+SELECT * FROM Turma -- Verificando os dados
+
+-- Turma da Engenharia de Software abertas
+
+SELECT Turma.id AS id_turma
+FROM
+	Turma
+JOIN 
+	Curso
+ON 
+	Turma.id_curso = Curso.id
+WHERE Turma.estado = 'Aberta' AND Curso.id='25';
+
+--------------------------------- ALUNO ------------------------------------------------
 
 CREATE TABLE Aluno
 (
-  id INT NOT NULL,
-  id_curso INT NOT NULL,
-  nome VARCHAR(100) NOT NULL,
-  matricula INT NOT NULL,
-  nasc DATE NOT NULL,
-  entrada YEAR NOT NULL,
-  conclusao YEAR NOT NULL,
-  CONSTRAINT aluno_pkey PRIMARY KEY (id)
-  CONSTRAINT aluno_id_curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso (id)
-
-)
+    id VARCHAR(100) NOT NULL,
+    id_curso VARCHAR(100) NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    matricula INT NOT NULL,
+    nasc DATE NOT NULL,
+    entrada INT NOT NULL, 
+    conclusao INT NOT NULL, 
+    CONSTRAINT aluno_pkey PRIMARY KEY (id),
+    CONSTRAINT curso_fkey FOREIGN KEY (id_curso) REFERENCES Curso (id)	
+);
 
 INSERT INTO Aluno (id, id_curso, nome, matricula, nasc, entrada, conclusao)
 VALUES
-    (1, 1, 'Ana Beatriz', 20231001, '2002-05-14', 2023, 2027), -- Engenharia de Software
-    (2, 2, 'Carlos Eduardo', 20221002, '2003-08-20', 2022, 2024), -- Design Gráfico
-    (3, 3, 'Mariana Santos', 20231003, '2001-11-30', 2023, 2028), -- Ciências da Computação
-    (4, 4, 'João Pedro', 20212004, '2000-02-18', 2021, 2024), -- Administração
-    (5, 5, 'Fernanda Oliveira', 20232005, '2004-07-12', 2023, 2026); -- Sistemas de Informação
+    ('AB1001', '25', 'Ana Beatriz', 20231001, '2002-05-14', 2023, 2027), 
+    ('CE1002', '30', 'Carlos Eduardo', 20221002, '2003-08-20', 2022, 2024), 
+    ('MS1003', '24', 'Mariana Santos', 20231003, '2001-11-30', 2023, 2028), 
+    ('JP2004', '7', 'João Pedro', 20212004, '2000-02-18', 2021, 2024), 
+    ('FO2005', '10', 'Fernanda Oliveira', 20232005, '2004-07-12', 2023, 2026);
+
+
+SELECT * FROM Aluno  -- Verificando os dados
+
+--- Consultando alunos do curso de administração
+SELECT 
+    Aluno.nome AS nome_aluno, 
+    Aluno.matricula AS matricula_aluno
+FROM 
+	Aluno
+JOIN 
+	Curso
+ON Aluno.id_curso = Curso.id
+WHERE Curso.nome = 'Administracao';
+
 
 -------------------------------------------------- AVALIAÇÃO ------------------------------------------------------
 
 CREATE TABLE Avaliacao (
-    id INT NOT NULL,
+    id VARCHAR (100) NOT NULL,
     tipo VARCHAR(100) NOT NULL,
     data_aplicacao DATE NOT NULL,
     peso_nota INT NOT NULL CHECK (peso_nota > 0 AND peso_nota <= 100),
@@ -113,18 +146,21 @@ CREATE TABLE Avaliacao (
 
 INSERT INTO Avaliacao (id, tipo, data_aplicacao, peso_nota)
 VALUES
-    (1, 'Prova', '2025-03-10', 30),    
-    (2, 'Trabalho', '2025-03-20', 20), 
-    (3, 'Prova', '2025-04-15', 25),   
-    (4, 'Trabalho', '2025-05-05', 15), 
-    (5, 'Prova', '2025-06-10', 10);    
+    ('1', 'Prova', '2025-03-10', 30),    
+    ('2', 'Trabalho', '2025-03-20', 20), 
+    ('3', 'Prova', '2025-04-15', 25),   
+    ('4', 'Trabalho', '2025-05-05', 15), 
+    ('5', 'Prova', '2025-06-10', 10);    
+
+
+SELECT * FROM Avaliacao  -- Verificando os dados
 
 -------------------------------------------------- NOTA ------------------------------------------------------
 
 CREATE TABLE Nota (
-    id INT NOT NULL,
-    id_avaliacao INT NOT NULL,
-    id_aluno INT NOT NULL,
+    id VARCHAR(10) NOT NULL,
+    id_avaliacao VARCHAR (10) NOT NULL,
+    id_aluno VARCHAR (100)  NOT NULL,
     valor FLOAT NOT NULL,
     CONSTRAINT nota_pkey PRIMARY KEY (id),
     FOREIGN KEY (id_avaliacao) REFERENCES Avaliacao(id),
@@ -133,15 +169,30 @@ CREATE TABLE Nota (
 
 INSERT INTO Nota (id, id_avaliacao, id_aluno, valor)
 VALUES
-    (1, 1, 1, 8.5),  
-    (2, 2, 1, 7.0),  
-    (3, 1, 2, 9.0),  
-    (4, 2, 2, 8.5),  
-    (5, 3, 3, 7.5);  
+    ('1', '1', 'AB1001', 8.5),  
+    ('2', '2', 'CE1002', 7.0),  
+    ('3', '1', 'MS1003', 9.0),  
+    ('4', '2', 'JP2004', 8.5),  
+    ('5', '3', 'FO2005', 7.5);  
+
+--- Consultando Alunos com nota maior que 8
+SELECT 
+    Aluno.nome AS aluno_nome,
+    Aluno.matricula AS matricula_aluno,
+    Nota.valor AS nota
+FROM 
+    Aluno
+JOIN 
+    Nota 
+ON 
+    Aluno.id = Nota.id_aluno
+WHERE 
+    Nota.valor > 8;
+
 
 -------------------------------------------------- SALA DE AULA ------------------------------------------------------
 CREATE TABLE Sala (
-  id INT NOT NULL,    
+  id VARCHAR (100) NOT NULL,    
   estrutura VARCHAR(100) NOT NULL CHECK (estrutura IN ('Normal', 'Auditório')),  
   lousa VARCHAR(50) NOT NULL CHECK (lousa IN ('Giz', 'Branca', 'Vidro')),
   capacidade INT NOT NULL CHECK (capacidade > 0),
@@ -152,16 +203,19 @@ CREATE TABLE Sala (
 
 INSERT INTO Sala (id, estrutura, lousa, capacidade, localizacao)
 VALUES
-    (101, 'Normal', 'Branca', 50, 'Bloco A - Sala 101'), 
-    (102, 'Normal', 'Giz', 40, 'Bloco B - Sala 102'),    
-    (201, 'Auditório', 'Vidro', 60, 'Bloco C - Auditório 201'), 
-    (202, 'Auditório', 'Branca', 80, 'Bloco D - Auditório 202'), 
-    (301, 'Normal', 'Branca', 50, 'Bloco E - Sala 301'); 
+    ('SA101', 'Normal', 'Branca', 50, 'Bloco A - Sala 101'), 
+    ('SA102', 'Normal', 'Giz', 40, 'Bloco B - Sala 102'),    
+    ('SA103', 'Auditório', 'Vidro', 60, 'Bloco C - Auditório 201'), 
+    ('SA104', 'Auditório', 'Branca', 80, 'Bloco D - Auditório 202'), 
+    ('SA105', 'Normal', 'Branca', 50, 'Bloco E - Sala 301'); 
+
+SELECT * FROM Sala  -- Verificando os dados
+
 
 -------------------------------------------------- MATERIAL DIDÁTICO ------------------------------------------------------
 
-CREATRE TABLE Material (
-id INT NOT NULL,
+CREATE TABLE Material (
+id VARCHAR (100) NOT NULL,
 titulo VARCHAR(50) NOT NULL,
 descricao VARCHAR (200) NOT NULL,
 formato VARCHAR (50) NOT NULL CHECK (formato IN ('PDF', 'Vídeo', 'Áudio', 'Material', 'Externo', 'Outros')),
@@ -170,16 +224,19 @@ CONSTRAINT material_pkey PRIMARY KEY (id)
 
 INSERT INTO Material (id, titulo, descricao, formato)
 VALUES
-    (1, 'Apostila de Algoritmos', 'Introdução a algoritmos e estruturas de dados', 'PDF'),
-    (2, 'Video Aula de Redes', 'Explicação sobre modelos OSI e TCP/IP', 'Vídeo'), 
-    (3, 'Podcast sobre UX', 'Discussão sobre usabilidade e experiência do usuário', 'Áudio'),
-    (4, 'Artigo Externo', 'Artigo sobre inteligência artificial de um site parceiro', 'Externo'), 
-    (5, 'Modelo de Projeto', 'Modelo de apresentação para projetos finais', 'Material'); 
+    ('M1', 'Apostila de Algoritmos', 'Introdução a algoritmos e estruturas de dados', 'PDF'),
+    ('M2', 'Video Aula de Redes', 'Explicação sobre modelos OSI e TCP/IP', 'Vídeo'), 
+    ('M3', 'Podcast sobre UX', 'Discussão sobre usabilidade e experiência do usuário', 'Áudio'),
+    ('M4', 'Artigo Externo', 'Artigo sobre inteligência artificial de um site parceiro', 'Externo'), 
+    ('M5', 'Modelo de Projeto', 'Modelo de apresentação para projetos finais', 'Material'); 
+
+SELECT * FROM Material  -- Verificando os dados
 
 
 -------------------------------------------------- PROJETO DE PESQUISA ------------------------------------------------------
+
 CREATE TABLE Projeto (
-id INT NOT NULL,
+id VARCHAR (100) NOT NULL,
 titulo VARCHAR (100) NOT NULL,
 descricao VARCHAR (200) NOT NULL,
 prof_coord VARCHAR (100) NOT NULL,
@@ -193,11 +250,18 @@ CONSTRAINT projeto_pkey PRIMARY KEY (id)
 
 INSERT INTO Projeto (id, titulo, descricao, prof_coord, area, orcam_planejado, orcam_disponivel, orcam_realizado, estado)
 VALUES
-    (1, 'Sistema de Gerenciamento Escolar', 'Desenvolvimento de um sistema para escolas públicas', 'Dr. João Silva', 'Engenharia de Software', 50000.000, 40000.000, 10000.000, 'Em andamento'),
-    (2, 'Redes Neurais para Diagnósticos Médicos', 'Estudo de redes neurais para análise de exames médicos', 'Dr. Maria Oliveira', 'Inteligência Artificial', 75000.000, 75000.000, 0.000, 'Planejado'),
-    (3, 'Análise de Dados para Gestão de Negócios', 'Desenvolvimento de dashboards para análise de negócios', 'Dr. Carlos Souza', 'Ciência de Dados', 30000.000, 20000.000, 10000.000, 'Em andamento'),
-    (4, 'Design Sustentável', 'Estudo sobre práticas de design com materiais sustentáveis', 'Dr. Ana Costa', 'Design Gráfico', 20000.000, 5000.000, 15000.000, 'Finalizado'),
-    (5, 'Automação Residencial', 'Desenvolvimento de protótipo para casas inteligentes', 'Dr. Roberto Lima', 'Sistemas de Informação', 40000.000, 35000.000, 5000.000, 'Em andamento');
+    ('PP02', 'Sistema de Gerenciamento Escolar', 'Desenvolvimento de um sistema para escolas públicas', 'Dr. João Silva', 'Engenharia de Software', 50000.000, 40000.000, 10000.000, 'Em andamento'),
+    ('PP32', 'Redes Neurais para Diagnósticos Médicos', 'Estudo de redes neurais para análise de exames médicos', 'Dr. Maria Oliveira', 'Inteligência Artificial', 75000.000, 75000.000, 0.000, 'Planejado'),
+    ('PP90', 'Análise de Dados para Gestão de Negócios', 'Desenvolvimento de dashboards para análise de negócios', 'Dr. Carlos Souza', 'Ciência de Dados', 30000.000, 20000.000, 10000.000, 'Em andamento'),
+    ('PP22', 'Design Sustentável', 'Estudo sobre práticas de design com materiais sustentáveis', 'Dr. Ana Costa', 'Design Gráfico', 20000.000, 5000.000, 15000.000, 'Finalizado'),
+    ('PP34', 'Automação Residencial', 'Desenvolvimento de protótipo para casas inteligentes', 'Dr. Roberto Lima', 'Sistemas de Informação', 40000.000, 35000.000, 5000.000, 'Em andamento');
+
+SELECT * FROM Projeto  -- Verificando os dados
+
+
+
+
+
 
 
 # CÓDIGO SQL : RELACIONAMENTOS
@@ -205,106 +269,241 @@ VALUES
 -------------------------------------------------- TURMA_DISCIPLINA ------------------------------------------------------
 
 CREATE TABLE Turma_Disciplina (
-    id SERIAL PRIMARY KEY,
-    id_turma INT NOT NULL,
-    id_disciplina INT NOT NULL,
+    id VARCHAR(100) PRIMARY KEY, -- Inicialmente como TD (Turma + Disciplina) e uma numeração em seguida
+    id_turma VARCHAR(10) NOT NULL,
+    id_disciplina VARCHAR (10) NOT NULL,
     CONSTRAINT fk_turma_disciplina_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id),
     CONSTRAINT fk_turma_disciplina_id_disciplina FOREIGN KEY (id_disciplina) REFERENCES Disciplina (id)
 );
 
+INSERT INTO Turma_Disciplina (id, id_turma, id_disciplina) VALUES
+('TD02', 'ES1', 'PR01'),
+('TD03', 'DG2', 'FD02'),
+('TD04', 'AD4', 'RH03'),
+('TD05', 'ES1', 'DW04'),
+('TD06', 'AD4', 'PO05');
+
+SELECT * FROM Turma_Disciplina
 
 
 -------------------------------------------------- SALA_TURMA ------------------------------------------------------
 
 CREATE TABLE Turma_Sala
 (
-  id SERIAL PRIMARY KEY,
-  id_turma CHAR(5) NOT NULL,
-  id_sala INT NOT NULL,
+  id VARCHAR (100) PRIMARY KEY,
+  id_turma VARCHAR(10) NOT NULL,
+  id_sala VARCHAR (100) NOT NULL,
   CONSTRAINT fk_turma_sala_id_turma FOREIGN KEY (id_turma) REFERENCES Turma(id),
-  CONSTRAINT fk_turma_sala_id_sala FOREIGN KEY (id_sala) REFERENCES Sala(id)
-)
+  CONSTRAINT fk_turma_sala_id_sala FOREIGN KEY (id_sala) REFERENCES Sala(id)  
+);
+
+INSERT INTO Turma_Sala (id,id_turma,id_sala) VALUES
+('ST01','ES1','SA101'),
+('ST02','DG2','SA102'),
+('ST03','CC3','SA103'),
+('ST04','AD4','SA104'),
+('ST05','SI5','SA105');
+
+SELECT * FROM Turma_Sala
+
 
 -------------------------------------------------- ALUNO_TURMA ------------------------------------------------------
 
 
 CREATE TABLE Turma_Aluno
 (
-  id SERIAL PRIMARY KEY,
-  id_turma INT NOT NULL,
-  id_aluno INT NOT NULL,
+  id VARCHAR (100) PRIMARY KEY,
+  id_turma VARCHAR (10) NOT NULL,
+  id_aluno VARCHAR (100) NOT NULL,
   CONSTRAINT fk_turma_aluno_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id),
   CONSTRAINT fk_turma_aluno_id_aluno FOREIGN KEY (id_aluno) REFERENCES Aluno (id)
-)
+);
+
+
+INSERT INTO Turma_Aluno (id, id_turma, id_aluno) VALUES
+('TA01', 'ES1', 'AB1001'),  
+('TA23', 'DG2', 'CE1002'),  
+('TA50', 'CC3', 'MS1003'),  
+('TA45', 'AD4', 'JP2004'),  
+('TA32', 'SI5', 'FO2005');  
+ 
+SELECT * FROM Turma_Aluno
 
 ------------------------------------------------- PROFESSOR_TURMA ----------------------------------------------------
 
 
 CREATE TABLE Professor_Turma (
-    id SERIAL PRIMARY KEY,
-    id_professor INT NOT NULL,
-    id_turma CHAR(5) NOT NULL,
+    id VARCHAR (100) PRIMARY KEY,
+    id_professor VARCHAR (100) NOT NULL,
+    id_turma VARCHAR (10) NOT NULL,
     CONSTRAINT fk_professor_turma_id_professor FOREIGN KEY (id_professor) REFERENCES Professor (id),
     CONSTRAINT fk_professor_turma_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id)
 );
 
--------------------------------------------------- CURSO_PROFESSOR ---------------------------------------------------
 
+INSERT INTO Professor_Turma (id, id_professor, id_turma) VALUES
+    ('PT1', 'P01', 'ES1'),  
+    ('PT2', 'P02', 'DG2'),  
+    ('PT3', 'P03', 'CC3'),  
+    ('PT4', 'P04', 'AD4'),  
+    ('PT5', 'P05', 'SI5');  
 
-CREATE TABLE Curso_Professor (
-    id SERIAL PRIMARY KEY,
-    id_curso INT NOT NULL,
-    id_professor INT NOT NULL,
-    CONSTRAINT fk_curso_professor_id_curso FOREIGN KEY (id_curso) REFERENCES Curso (id),
-    CONSTRAINT fk_curso_professor_id_professor FOREIGN KEY (id_professor) REFERENCES Professor (id)
-);
-
+SELECT * FROM Professor_Turma
 ----------------------------------------------- MATERIAL DIDATICO_PROFESSOR --------------------------------------------
 
 
-CREATE TABLE MaterialDidatico_Professor (
-    id SERIAL PRIMARY KEY,
-    id_material INT NOT NULL,
-    id_professor INT NOT NULL,
+CREATE TABLE Materia_Professor (
+    id VARCHAR (100) PRIMARY KEY,
+    id_material VARCHAR (100) NOT NULL,
+    id_professor VARCHAR (100) NOT NULL,
     CONSTRAINT fk_material_professor_id_material FOREIGN KEY (id_material) REFERENCES Material (id),
     CONSTRAINT fk_material_professor_id_professor FOREIGN KEY (id_professor) REFERENCES Professor (id)
 );
 
+
+
+INSERT INTO Materia_Professor (id, id_material, id_professor) VALUES
+    ('MP1', 'M1', 'P01'),  
+    ('MP2', 'M2', 'P05'),  
+    ('MP3', 'M3', 'P02'),  
+    ('MP4', 'M4', 'P04'),  
+    ('MP5', 'M5', 'P03');  
+
+SELECT * FROM Materia_Professor
+
+
+
 ----------------------------------------------- DISCIPLINA_MATERIAL DIDATICO --------------------------------------------
 
 
-CREATE TABLE Disciplina_MaterialDidatico (
-    id SERIAL PRIMARY KEY,
-    id_disciplina CHAR(3) NOT NULL,
-    id_material INT NOT NULL,
+CREATE TABLE Disciplina_Material (
+    id VARCHAR (100) PRIMARY KEY,
+    id_disciplina VARCHAR (5) NOT NULL,
+    id_material VARCHAR (100) NOT NULL,
     CONSTRAINT fk_disciplina_material_id_disciplina FOREIGN KEY (id_disciplina) REFERENCES Disciplina (id),
     CONSTRAINT fk_disciplina_material_id_material FOREIGN KEY (id_material) REFERENCES Material (id)
 );
 
+
+INSERT INTO Disciplina_Material (id, id_disciplina, id_material) VALUES
+('DM01', 'PR01','M1'),
+('DM02', 'PR01', 'M2'),
+('DM03', 'FD02', 'M3'),
+('DM04', 'PR01', 'M4'),
+('DM05', 'PO05','M5');
+
+SELECT * FROM Disciplina_Material
+
 ----------------------------------------------- PROJETO DE PESQUISA_PROFESSOR --------------------------------------------
 
 
-CREATE TABLE ProjetoPesquisa_Professor (
-    id SERIAL PRIMARY KEY,
-    id_projeto INT NOT NULL,
-    id_professor INT NOT NULL,
+CREATE TABLE Projeto_Professor (
+    id VARCHAR (100) PRIMARY KEY,
+    id_projeto VARCHAR (100) NOT NULL,
+    id_professor VARCHAR (100) NOT NULL,
+    função VARCHAR(100) NOT NULL,
     CONSTRAINT fk_projeto_professor_id_projeto FOREIGN KEY (id_projeto) REFERENCES Projeto (id),
     CONSTRAINT fk_projeto_professor_id_professor FOREIGN KEY (id_professor) REFERENCES Professor (id)
 );
 
+INSERT INTO Projeto_Professor (id, id_projeto, id_professor,função) VALUES 
+('PPP01', 'PP02', 'P01', 'Pesquisador(a) Principal'),
+('PPP02', 'PP32', 'P01', 'Vice Coordenador(a)'),
+('PPP03', 'PP90', 'P03', 'Orientador(a)'),
+('PPP04', 'PP22', 'P02','Orientador(a)'),
+('PPP05', 'PP34', 'P05', 'Consultor(a) Técnico');
+
+SELECT * FROM Projeto_Professor
+
+
+
 ----------------------------------------------- PROJETO DE PESQUISA_ALUNO ------------------------------------------------
 
 
-CREATE TABLE ProjetoPesquisa_Aluno (
-    id SERIAL PRIMARY KEY,
-    id_projeto INT NOT NULL,
-    id_aluno INT NOT NULL,
+CREATE TABLE Projeto_Aluno (
+    id VARCHAR(100) PRIMARY KEY,
+    id_projeto VARCHAR(100) NOT NULL,
+    id_aluno VARCHAR(100) NOT NULL,
+    função VARCHAR(100) NOT NULL,
     CONSTRAINT fk_projeto_aluno_id_projeto FOREIGN KEY (id_projeto) REFERENCES Projeto (id),
     CONSTRAINT fk_projeto_aluno_id_aluno FOREIGN KEY (id_aluno) REFERENCES Aluno (id)
 );
 
 
+INSERT INTO Projeto_Aluno (id, id_projeto, id_aluno, função) VALUES
 
+('PA01', 'PP02', 'AB1001', 'Bolsista de Iniciação Científica'),
+('PA02', 'PP32', 'AB1001', 'Bolsista de Iniciação Científica'),
+('PA03', 'PP90', 'MS1003', 'Monitor(a)'),
+('PA04', 'PP22', 'CE1002', 'Bolsista de Iniciação Científica'),
+('PA05', 'PP34', 'FO2005', 'Auxiliar de Laboratório');
+
+SELECT * FROM Projeto_Aluno
+
+SELECT 
+    Aluno.nome AS nome_aluno,
+    Aluno.matricula AS matricula_aluno,
+    Projeto_Aluno.função AS função_aluno,
+    Projeto.titulo AS titulo_projeto
+FROM 
+    Aluno
+JOIN 
+    Curso
+    ON Aluno.id_curso = Curso.id
+JOIN 
+    Projeto_Aluno
+    ON Aluno.id = Projeto_Aluno.id_aluno
+JOIN 
+    Projeto
+    ON Projeto.id = Projeto_Aluno.id_projeto
+WHERE 
+    Curso.nome = 'Engenharia de Software';
+
+
+	
+
+----------------------------------------------- AVALIAÇÃO_TURMA ------------------------------------------------
+
+CREATE TABLE Avaliacao_Turma (
+   id VARCHAR(100) PRIMARY KEY,
+   id_avaliacao VARCHAR (100) NOT NULL,
+   id_turma VARCHAR (100) NOT NULL,
+   CONSTRAINT fk_avaliacao_turma_id_avaliacao FOREIGN KEY (id_avaliacao) REFERENCES Avaliacao (id),
+   CONSTRAINT fk_avaliacao_turma_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id)
+);
+
+INSERT INTO Avaliacao_Turma (id, id_avaliacao, id_turma) VALUES
+('AT01', '1','ES1'),
+('AT02', '2','DG2'),
+('AT03', '3','CC3'),
+('AT04', '4','AD4'),
+('AT05', '5','SI5');
+
+
+SELECT * FROM Avaliacao_Turma
+
+
+
+----------------------------------------------- MATERIAL_TURMA ------------------------------------------------
+
+CREATE TABLE Material_Turma (
+   id VARCHAR(100) PRIMARY KEY,
+   id_material VARCHAR (100) NOT NULL,
+   id_turma VARCHAR (100) NOT NULL,
+   CONSTRAINT fk_material_turma_id_material FOREIGN KEY (id_material) REFERENCES Material (id),
+   CONSTRAINT fk_material_turma_id_turma FOREIGN KEY (id_turma) REFERENCES Turma (id)
+);
+
+
+INSERT INTO Material_Turma (id, id_material, id_turma) VALUES
+('MT01','M1','ES1'),
+('MT02','M2','CC3'),
+('MT03','M3','DG2'),
+('MT04','M4','ES1'),
+('MT05','M5','AD4');
+
+
+SELECT * FROM Material_Turma
 
 
 
